@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - Smart EMI Loan Planner</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="bg-slate-100 dark:bg-slate-900">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+      <a href="index.html" class="font-bold text-xl text-indigo-600">
+        🏦 Smart EMI Loan Planner
+      </a>
+
+      <div class="flex gap-4">
+        <a href="index.html" class="nav-link">Calculator</a>
+        <a href="about.html" class="nav-link active">About</a>
+        <a href="privacy.html" class="nav-link">Privacy</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-5xl mx-auto px-4 py-10">
+
+    <div class="card">
+
+      <h1 class="text-3xl font-bold mb-6 text-indigo-600">
+        About Smart EMI Loan Planner
+      </h1>
+
+      <p class="mb-8 text-slate-600 dark:text-slate-300">
+        Smart EMI Loan Planner is a free, offline-first financial planning tool
+        designed to help borrowers understand their active loans, remaining
+        balance, prepayment opportunities, and potential interest savings.
+      </p>
+
+      <!-- Features -->
+      <section class="mb-10">
+        <h2 class="section-title">
+          🎯 What It Does
+        </h2>
+
+        <ul class="space-y-3">
+          <li>✅ Calculate EMI for new loans</li>
+          <li>✅ Calculate outstanding loan balance after paid EMIs</li>
+          <li>✅ Analyze loan prepayment impact</li>
+          <li>✅ Compare Reduce EMI vs Reduce Tenure strategies</li>
+          <li>✅ Estimate loan closure amount</li>
+          <li>✅ View amortization schedules</li>
+          <li>✅ Save calculations locally in your browser</li>
+          <li>✅ Export reports as TXT files</li>
+        </ul>
+      </section>
+
+      <!-- Calculations -->
+      <section class="mb-10">
+        <h2 class="section-title">
+          📊 Calculations Supported
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+
+          <div class="card">
+            <h3 class="font-semibold mb-2">EMI Calculation</h3>
+            <p>Calculate monthly EMI based on loan amount, interest rate, and tenure.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="font-semibold mb-2">Outstanding Balance</h3>
+            <p>Determine remaining principal after a specific number of EMIs.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="font-semibold mb-2">Prepayment Analysis</h3>
+            <p>Estimate interest savings and loan reduction after making a lump-sum payment.</p>
+          </div>
+
+          <div class="card">
+            <h3 class="font-semibold mb-2">Loan Closure</h3>
+            <p>Calculate the amount required to close the loan immediately.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Languages -->
+      <section class="mb-10">
+        <h2 class="section-title">
+          🌐 Multilingual Support
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-4">
+
+          <div class="card text-center">
+            <div class="text-3xl mb-2">🇬🇧</div>
+            <h3 class="font-semibold">English</h3>
+            <p class="text-sm text-slate-500">Full Support</p>
+          </div>
+
+          <div class="card text-center">
+            <div class="text-3xl mb-2">🇮🇳</div>
+            <h3 class="font-semibold">हिन्दी</h3>
+            <p class="text-sm text-slate-500">पूर्ण समर्थन</p>
+          </div>
+
+          <div class="card text-center">
+            <div class="text-3xl mb-2">🇮🇳</div>
+            <h3 class="font-semibold">తెలుగు</h3>
+            <p class="text-sm text-slate-500">పూర్తి మద్దతు</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Tech Stack -->
+      <section class="mb-10">
+        <h2 class="section-title">
+          ⚙️ Tech Stack
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+
+          <div class="card">
+            <strong>Frontend</strong>
+            <p>HTML5</p>
+          </div>
+
+          <div class="card">
+            <strong>Styling</strong>
+            <p>Tailwind CSS + Custom CSS</p>
+          </div>
+
+          <div class="card">
+            <strong>Language</strong>
+            <p>Vanilla JavaScript (ES6+)</p>
+          </div>
+
+          <div class="card">
+            <strong>Storage</strong>
+            <p>Browser localStorage</p>
+          </div>
+
+          <div class="card">
+            <strong>Backend</strong>
+            <p>None Required</p>
+          </div>
+
+          <div class="card">
+            <strong>Deployment</strong>
+            <p>Vercel</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Disclaimer -->
+      <section>
+        <h2 class="section-title">
+          ⚠️ Disclaimer
+        </h2>
+
+        <div class="callout">
+          All calculations are estimates based on standard reducing-balance loan
+          formulas. Actual values may vary depending on lender policies,
+          processing charges, prepayment fees, rounding methods, and account
+          conditions. Always verify final figures with your bank or lending institution.
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <footer class="text-center text-sm text-slate-500 py-8">
+    © 2026 Smart EMI Loan Planner. Free, offline, and privacy-friendly.
+  </footer>
+
+</body>
+</html>
