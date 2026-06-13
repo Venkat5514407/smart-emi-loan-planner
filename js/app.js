@@ -135,13 +135,13 @@ function handleCalculate() {
   const resultsSection = document.getElementById("resultsSection");
 
 if (resultsSection) {
+  resultsSection.classList.remove("hidden");
   resultsSection.scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
-
-  resultsSection.classList.remove("hidden");
 }
+  
   const exportSection = document.getElementById("exportSection");
 
 if (exportSection) {
@@ -245,7 +245,7 @@ function renderOutstanding(r) {
   if (progressBar) progressBar.style.width = pct.toFixed(1) + "%";
   const progressLabel = document.getElementById("repaidProgressLabel");
   if (progressLabel) {
-  progressLabel.textContent = `${pct.toFixed(0)}% repaid`;
+  progressLabel.textContent = `${pct.toFixed(0)}% ${t("label_repaid")}`;
 }
 }
 
@@ -275,7 +275,7 @@ function renderPrepayment(r) {
   setText("re_new_emi", fmt(pp.reduceEMI.newEMI));
   setText("re_interest_saved", fmt(pp.reduceEMI.interestSaved));
   setText("re_old_emi", fmt(r.emi));
-  setText("re_emi_diff", fmt(r.emi - pp.reduceEMI.newEMI) + " less/mo");
+  setText("re_emi_diff", fmt(r.emi - pp.reduceEMI.newEMI) + " " + t("per_month_saved"));
 
   // Reduce Tenure tab
   setText("rt_months_saved", pp.reduceTenure.monthsSaved);
