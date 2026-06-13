@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Smart Loan Planner — Calculate EMI, outstanding balance, prepayment savings and amortization for bike, car, home, personal and education loans. Free, offline, multilingual." />
+  <meta name="keywords" content="EMI calculator, loan prepayment, loan planner India, amortization schedule, Hindi Telugu" />
+  <title>Smart EMI Loan Planner</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { fontFamily: { sans: ['Inter', 'Segoe UI', 'system-ui', 'sans-serif'] } } }
+    }
+  </script>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Prevent dark mode flash -->
+  <script>
+    (function() {
+      const t = localStorage.getItem("slp_theme");
+      if (t === "light") document.documentElement.classList.remove("dark");
+      else document.documentElement.classList.add("dark");
+    })();
+  </script>
+</head>
+
+<body class="bg-slate-100 dark:bg-gray-900 text-slate-800 dark:text-slate-200">
+
+<!-- ═══════════════════════════════════════════════════════ NAVBAR -->
+<nav class="navbar px-4 py-3">
+  <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+
+    <!-- Brand -->
+    <a href="index.html" class="flex items-center gap-2 shrink-0">
+      <span class="text-2xl">🏦</span>
+      <span class="font-extrabold text-base text-indigo-600 dark:text-indigo-400 hidden sm:inline" data-i18n="appName">Smart EMI Loan Planner</span>
+    </a>
+
+    <!-- Nav Links + Controls -->
+    <div class="flex items-center gap-1 sm:gap-2 flex-wrap justify-end">
+      <a href="index.html" class="nav-link active" data-i18n="nav_home">Calculator</a>
+      <a href="about.html" class="nav-link" data-i18n="nav_about">About</a>
+      <a href="privacy.html" class="nav-link" data-i18n="nav_privacy">Privacy</a>
+
+      <!-- Language -->
+      <select id="langSelect" class="lang-select" aria-label="Language">
+        <option value="en">🇬🇧 EN</option>
+        <option value="hi">🇮🇳 हिन्दी</option>
+        <option value="te">🇮🇳 తెలుగు</option>
+      </select>
+
+      <!-- Theme Toggle -->
+      <button id="themeToggle" aria-label="Toggle theme"
+        class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 transition-colors">
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════ HERO -->
+<header class="max-w-6xl mx-auto px-4 pt-8 pb-4 text-center">
+  <h1 class="text-2xl sm:text-3xl font-extrabold text-indigo-600 dark:text-indigo-400 mb-1" data-i18n="appName">Smart EMI Loan Planner</h1>
+  <p class="text-sm text-slate-500 dark:text-slate-400" data-i18n="appTagline">Plan smarter. Pay less interest.</p>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════ MAIN LAYOUT -->
+<main class="max-w-6xl mx-auto px-4 pb-16 grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+  <!-- ─── LEFT: FORM ──────────────────────────────────────── -->
+  <section class="lg:col-span-1">
+    <div class="card animate-in" id="formCard">
+      <h2 class="section-title">
+        <span>📋</span>
+        <span data-i18n="section_loan_details">Loan Details</span>
+      </h2>
+
+      <form id="loanForm" novalidate autocomplete="off" class="space-y-4">
+
+        <!-- Borrower Name -->
+        <div>
+          <label class="form-label" for="borrowerName" data-i18n="label_borrower_name">Borrower Name</label>
+          <input id="borrowerName" type="text" class="form-input"
+            data-i18n-attr="placeholder" data-i18n="placeholder_name"
+            placeholder="Enter borrower name" />
+        </div>
+
+        <!-- Loan Type -->
+        <div>
+          <label class="form-label" for="loanType" data-i18n="label_loan_type">Loan Type</label>
+          <select id="loanType" class="form-input">
+            <option value="Bike Loan" data-i18n="loan_bike">Bike Loan</option>
+            <option value="Car Loan" data-i18n="loan_car">Car Loan</option>
+            <option value="Home Loan" data-i18n="loan_home">Home Loan</option>
+            <option value="Personal Loan" selected data-i18n="loan_personal">Personal Loan</option>
+            <option value="Education Loan" data-i18n="loan_education">Education Loan</option>
+            <option value="Custom Loan" data-i18n="loan_custom">Custom Loan</option>
+          </select>
+        </div>
+
+        <!-- Loan Amount -->
+        <div>
+          <label class="form-label" for="loanAmount" data-i18n="label_loan_amount">Loan Amount (₹)</label>
+          <input id="loanAmount" type="number" min="1" class="form-input"
+            placeholder="e.g. 500000"
+            data-i18n-attr="placeholder" data-i18n="placeholder_amount" />
+          <p id="err_loanAmount" class="field-error"></p>
+        </div>
+
+        <!-- Annual Rate -->
+        <div>
+          <label class="form-label" for="annualRate" data-i18n="label_annual_rate">Annual Interest Rate (%)</label>
+          <input id="annualRate" type="number" min="0" step="0.01" class="form-input"
+            placeholder="e.g. 12"
+            data-i18n-attr="placeholder" data-i18n="placeholder_rate" />
+          <p id="err_annualRate" class="field-error"></p>
+        </div>
+
+        <!-- Tenure -->
+        <div>
+          <label class="form-label" for="tenureMonths" data-i18n="label_tenure">Loan Tenure (Months)</label>
+          <input id="tenureMonths" type="number" min="1" class="form-input"
+            placeholder="e.g. 60"
+            data-i18n-attr="placeholder" data-i18n="placeholder_tenure" />
+          <p id="err_tenureMonths" class="field-error"></p>
+        </div>
+
+        <!-- EMIs Paid -->
+        <div>
+          <label class="form-label" for="emisPaid" data-i18n="label_emis_paid">EMIs Already Paid</label>
+          <input id="emisPaid" type="number" min="0" value="0" class="form-input"
+            placeholder="e.g. 12"
+            data-i18n-attr="placeholder" data-i18n="placeholder_emis_paid" />
+          <p id="err_emisPaid" class="field-error"></p>
+        </div>
+
+        <!-- Prepayment -->
+        <div>
+          <label class="form-label" for="prepaymentAmount" data-i18n="label_prepayment">Prepayment Amount (₹)</label>
+          <input id="prepaymentAmount" type="number" min="0" class="form-input"
+            placeholder="e.g. 50000 (optional)"
+            data-i18n-attr="placeholder" data-i18n="placeholder_prepayment" />
+          <p id="err_prepaymentAmount" class="field-error"></p>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-3 pt-1">
+          <button type="button" id="btnCalculate" class="btn-primary flex-1 pulse-brand" data-i18n="btn_calculate">Calculate</button>
+          <button type="button" id="btnReset" class="btn-secondary" data-i18n="btn_reset">Reset</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- ─── RIGHT: RESULTS ──────────────────────────────────── -->
+  <section class="lg:col-span-2 flex flex-col gap-6" id="resultsSection" style="display:none!important">
+
+    <!-- ── Row 1: EMI Summary + Outstanding ── -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <!-- EMI Summary Card -->
+      <div class="card animate-in">
+        <h2 class="section-title"><span>📊</span> <span data-i18n="section_emi">EMI Summary</span></h2>
+
+        <!-- Loan type + borrower -->
+        <div class="flex items-center justify-between mb-3">
+          <span class="loan-type-badge" id="res_loan_type">—</span>
+          <span class="text-xs text-slate-400 dark:text-slate-500 truncate max-w-[120px]" id="res_borrower">—</span>
+        </div>
+
+        <!-- Big EMI display -->
+        <div class="emi-hero">
+          <p class="emi-hero-label" data-i18n="label_monthly_emi">Monthly EMI</p>
+          <p class="emi-hero-value" id="res_emi">₹ —</p>
+          <p class="emi-hero-sub" data-i18n="label_loan_amount_res">Loan Amount: <span id="res_loan_amount">—</span></p>
+        </div>
+
+        <hr class="section-divider" />
+
+        <div>
+          <div class="stat-row">
+            <span class="stat-label" data-i18n="label_total_payable">Total Amount Payable</span>
+            <span class="stat-value" id="res_total_payable">—</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label" data-i18n="label_total_interest">Total Interest</span>
+            <span class="stat-value warning" id="res_total_interest">—</span>
+          </div>
+        </div>
+
+        <!-- Interest ratio bar -->
+        <div class="mt-3">
+          <div class="progress-track">
+            <div class="progress-fill" id="interestRatioBar" style="width: 0%"></div>
+          </div>
+          <p class="progress-label" id="interestRatioLabel"></p>
+        </div>
+      </div>
+
+      <!-- Outstanding Balance Card -->
+      <div class="card animate-in">
+        <h2 class="section-title"><span>💰</span> <span data-i18n="section_outstanding">Outstanding Balance</span></h2>
+
+        <div class="text-center py-2 mb-3">
+          <p class="emi-hero-label" data-i18n="label_outstanding">Outstanding Principal</p>
+          <p class="emi-hero-value" id="res_outstanding">₹ —</p>
+          <p class="emi-hero-sub">
+            <span data-i18n="label_remaining_months">Remaining:</span>
+            <span id="res_remaining_months">—</span>
+            <span id="res_remaining_months_num" class="text-xs"></span>
+          </p>
+        </div>
+
+        <!-- Repayment progress -->
+        <div class="mb-3">
+          <div class="progress-track">
+            <div class="progress-fill success-fill" id="repaidProgressBar" style="width: 0%"></div>
+          </div>
+          <p class="progress-label" id="repaidProgressLabel"></p>
+        </div>
+
+        <hr class="section-divider" />
+
+        <div>
+          <div class="stat-row">
+            <span class="stat-label" data-i18n="label_principal_paid">Principal Paid So Far</span>
+            <span class="stat-value success" id="res_principal_paid">—</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label" data-i18n="label_interest_paid">Interest Paid So Far</span>
+            <span class="stat-value warning" id="res_interest_paid">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Prepayment Analysis Card ── -->
+    <div class="card animate-in">
+      <h2 class="section-title"><span>⚡</span> <span data-i18n="section_prepayment">Prepayment Analysis</span></h2>
+
+      <!-- No prepayment message -->
+      <div id="noPrepaymentMsg" class="callout text-center py-4" data-i18n="label_no_prepayment">
+        Enter a prepayment amount to see impact analysis.
+      </div>
+
+      <!-- Prepayment content -->
+      <div id="prepaymentContent" class="hidden">
+
+        <!-- Shared info -->
+        <div class="grid grid-cols-2 gap-3 mb-4">
+          <div class="bg-slate-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
+            <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5">New Principal</p>
+            <p class="font-bold text-indigo-600 dark:text-indigo-400 text-sm" id="res_new_principal">—</p>
+          </div>
+          <div class="bg-slate-50 dark:bg-gray-800/60 rounded-xl p-3 text-center">
+            <p class="text-xs text-slate-400 dark:text-slate-500 mb-0.5" data-i18n="label_original_interest">Original Remaining Interest</p>
+            <p class="font-bold text-amber-500 text-sm" id="res_original_remaining_interest">—</p>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs-wrapper">
+          <button class="prepay-tab tab-inactive" data-tab="reduceEMI" data-i18n="tab_reduce_emi">Reduce EMI</button>
+          <button class="prepay-tab tab-active" data-tab="reduceTenure">
+            <span data-i18n="tab_reduce_tenure">Reduce Tenure</span>
+            <span class="recommended-badge" data-i18n="recommended">Recommended</span>
+          </button>
+        </div>
+
+        <!-- Panel: Reduce EMI -->
+        <div class="prepay-panel hidden" data-panel="reduceEMI">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <div class="stat-row">
+                <span class="stat-label" data-i18n="label_old_emi">Current EMI</span>
+                <span class="stat-value" id="re_old_emi">—</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label" data-i18n="label_new_emi">New Monthly EMI</span>
+                <span class="stat-value highlight" id="re_new_emi">—</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Monthly Savings</span>
+                <span class="stat-value success" id="re_emi_diff">—</span>
+              </div>
+            </div>
+            <div class="savings-box">
+              <p class="savings-box-label" data-i18n="label_interest_saved">Interest Saved</p>
+              <p class="savings-box-value" id="re_interest_saved">—</p>
+              <p class="savings-box-sub">By reducing your EMI after prepayment.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel: Reduce Tenure -->
+        <div class="prepay-panel" data-panel="reduceTenure">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <div class="stat-row">
+                <span class="stat-label" data-i18n="label_new_tenure">New Remaining Tenure</span>
+                <span class="stat-value highlight" id="rt_new_tenure">—</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">Tenure Detail</span>
+                <span class="stat-value text-sm" id="rt_new_tenure_detail">—</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label" data-i18n="label_months_saved">Months Saved</span>
+                <span class="stat-value success" id="rt_months_saved">—</span>
+              </div>
+            </div>
+            <div class="savings-box">
+              <p class="savings-box-label" data-i18n="label_interest_saved">Interest Saved</p>
+              <p class="savings-box-value" id="rt_interest_saved">—</p>
+              <p class="savings-box-sub">Best option — same EMI, closes faster.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Loan Closure Card ── -->
+    <div class="card animate-in">
+      <h2 class="section-title"><span>🔒</span> <span data-i18n="section_closure">Loan Closure Today</span></h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+        <div class="text-center sm:col-span-1 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl p-4">
+          <p class="text-xs text-indigo-400 font-semibold uppercase tracking-wider mb-1" data-i18n="label_closure_amount">Close Loan Today</p>
+          <p class="closure-amount" id="res_closure_amount">—</p>
+          <p class="text-xs text-slate-400 mt-1">Outstanding principal only</p>
+        </div>
+
+        <div class="sm:col-span-2 flex flex-col justify-center gap-3">
+          <div class="stat-row">
+            <span class="stat-label" data-i18n="label_future_interest">Future Interest Avoided</span>
+            <span class="stat-value success text-base" id="res_future_interest">—</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-label" data-i18n="label_continued_total">Total if Continued</span>
+            <span class="stat-value warning" id="res_continued_total">—</span>
+          </div>
+          <p class="callout" data-i18n="closure_note">Closing the loan today avoids future interest entirely.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Amortization Schedule ── -->
+    <div class="card animate-in">
+      <div class="flex items-center justify-between mb-1">
+        <h2 class="section-title mb-0"><span>📅</span> <span data-i18n="section_amortization">Amortization Schedule</span></h2>
+        <button id="btnToggleAmort" class="btn-secondary text-xs py-1.5 px-3" data-i18n="show_full_schedule">
+          Show Full Schedule
+        </button>
+      </div>
+      <p class="text-xs text-slate-400 dark:text-slate-500 mb-3">Month-by-month principal & interest breakdown.</p>
+
+      <div id="amortContainer" class="hidden">
+        <div class="amort-table-wrapper">
+          <table class="amort-table">
+            <thead>
+              <tr>
+                <th data-i18n="col_month">Month</th>
+                <th class="text-right" data-i18n="col_emi">EMI</th>
+                <th class="text-right" data-i18n="col_principal">Principal</th>
+                <th class="text-right" data-i18n="col_interest">Interest</th>
+                <th class="text-right" data-i18n="col_balance">Balance</th>
+              </tr>
+            </thead>
+            <tbody id="amortTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </section><!-- /resultsSection -->
+
+</main><!-- /main grid -->
+
+<!-- ═══════════════════════════════════════════════════════ EXPORT + HISTORY (full width) -->
+<div class="max-w-6xl mx-auto px-4 pb-6 flex flex-col gap-6" id="exportSection" style="display:none!important">
+
+  <!-- Export Card -->
+  <div class="card animate-in">
+    <h2 class="section-title"><span>📤</span> <span data-i18n="section_export">Export Summary</span></h2>
+    <div class="flex flex-wrap gap-3">
+      <button id="btnSave" class="btn-save" data-i18n="btn_save">💾 Save Record</button>
+      <button id="btnCopy" class="btn-export" data-i18n="btn_copy">📋 Copy Summary</button>
+      <button id="btnDownload" class="btn-export" data-i18n="btn_download">⬇️ Download TXT</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ HISTORY (always visible) -->
+<div class="max-w-6xl mx-auto px-4 pb-16" id="historySection">
+  <div class="card animate-in">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="section-title mb-0">
+        <span>🗂️</span>
+        <span data-i18n="section_history">Loan History</span>
+        <span id="historyCount" class="ml-1.5 bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+      </h2>
+      <button id="btnClearAll" class="btn-secondary text-xs py-1.5 px-3 text-red-500 dark:text-red-400 border-red-200 dark:border-red-800 hover:bg-red-50 dark:hover:bg-red-900/20" data-i18n="btn_clear_all">Clear All</button>
+    </div>
+    <p id="historyEmpty" class="text-sm text-slate-400 dark:text-slate-500 text-center py-6" data-i18n="history_empty">
+      No saved records yet. Calculate and save a loan to see history.
+    </p>
+    <div id="historyList" class="flex flex-col gap-3"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ FOOTER -->
+<footer class="border-t border-slate-200 dark:border-slate-800 py-6 px-4 text-center">
+  <p class="text-xs text-slate-400 dark:text-slate-500" data-i18n="footer">
+    © 2026 Smart EMI Loan Planner. All calculations are estimates for planning purposes only.
+  </p>
+  <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">
+    <a href="about.html" class="hover:text-indigo-400 transition-colors">About</a> ·
+    <a href="privacy.html" class="hover:text-indigo-400 transition-colors">Privacy</a>
+  </p>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════ TOAST CONTAINER -->
+<div id="toastContainer" aria-live="polite"></div>
+
+<!-- ═══════════════════════════════════════════════════════ SCRIPTS -->
+<script src="js/translations.js"></script>
+<script src="js/calculator.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/export.js"></script>
+<script src="js/app.js"></script>
+
+<!-- Fix hidden sections - override inline style via JS after load -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // The resultsSection and exportSection use class-based hidden, not inline style
+    const rs = document.getElementById("resultsSection");
+    const es = document.getElementById("exportSection");
+    if (rs) { rs.removeAttribute("style"); rs.classList.add("hidden"); }
+    if (es) { es.removeAttribute("style"); es.classList.add("hidden"); }
+  });
+</script>
+
+</body>
+</html>
