@@ -109,6 +109,9 @@ const Translations = {
     emis_exceed_error: "EMIs already paid cannot exceed total tenure.",
     prepayment_exceed_error: "Prepayment amount cannot exceed outstanding principal.",
 
+    label_repaid: "repaid",
+    per_month_saved: "saved per month",
+
     // Misc
     months: "months",
     years: "years",
@@ -213,6 +216,9 @@ const Translations = {
     emis_exceed_error: "भरी गई EMI कुल अवधि से अधिक नहीं हो सकती।",
     prepayment_exceed_error: "अग्रिम भुगतान राशि बकाया मूलधन से अधिक नहीं हो सकती।",
 
+    label_repaid: "चुकाया गया",
+    per_month_saved: "प्रति माह बचत",
+
     months: "महीने",
     years: "साल",
     na: "N/A",
@@ -315,6 +321,9 @@ const Translations = {
     emis_paid_error: "చెల్లించిన EMI లు ప్రతికూలంగా ఉండకూడదు.",
     emis_exceed_error: "చెల్లించిన EMI లు మొత్తం వ్యవధి కంటే ఎక్కువగా ఉండకూడదు.",
     prepayment_exceed_error: "అదనపు చెల్లింపు మొత్తం మిగిలిన అసలు కంటే ఎక్కువగా ఉండకూడదు.",
+
+    label_repaid: "చెల్లించబడింది",
+    per_month_saved: "నెలకు ఆదా",
 
     months: "నెలలు",
     years: "సంవత్సరాలు",
